@@ -144,14 +144,10 @@ const $welcomSection: ViewStyle = {
 }
 
 const $heading: TextStyle = {
-  // borderWidth: 1,
-  // fontWeight: "600",
-  // fontSize: 24,
   letterSpacing: 0.024,
 }
 
 const $subHeading: TextStyle = {
-  // borderWidth: 1,
   width: "93%",
   color: colors.palette.neutral500,
 }
@@ -225,13 +221,10 @@ const $modalBottomSection: ViewStyle = {
   backgroundColor: "white",
   padding: 20,
   borderRadius: 10,
-  // borderWidth: 1,
-  // flexDirection: "row",
   alignItems: "flex-end",
 }
 
 const $modalBtnsWrapper: ViewStyle = {
-  // borderWidth: 1,
   flexDirection: "row",
   columnGap: 40,
 }
