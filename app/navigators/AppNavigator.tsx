@@ -36,10 +36,12 @@ import { colors } from "app/theme"
  */
 export type AppStackParamList = {
   Welcome: undefined
-  Login: undefined // @demo remove-current-line
-  Demo: NavigatorScreenParams<DemoTabParamList> // @demo remove-current-line
+  Login: undefined 
+  Demo: NavigatorScreenParams<DemoTabParamList> 
+  OtpVerification: undefined
   // 🔥 Your screens go here
-  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
+  AccountActivation: undefined
+	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
 /**
@@ -71,9 +73,8 @@ const AppStack = observer(function AppStack() {
       {/* @demo remove-block-start */}
       {isAuthenticated ? (
         <>
-          {/* @demo remove-block-end */}
           <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
-          {/* @demo remove-block-start */}
+          <Stack.Screen name="OtpVerification" component={Screens.OtpVerificationScreen} />
           <Stack.Screen name="Demo" component={DemoNavigator} />
         </>
       ) : (
@@ -83,7 +84,8 @@ const AppStack = observer(function AppStack() {
       )}
       {/* @demo remove-block-end */}
       {/** 🔥 Your screens go here */}
-      {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
+      <Stack.Screen name="AccountActivation" component={Screens.AccountActivationScreen} />
+			{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )
 })
