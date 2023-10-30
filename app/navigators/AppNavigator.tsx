@@ -41,6 +41,9 @@ export type AppStackParamList = {
   OtpVerification: undefined
   // 🔥 Your screens go here
   AccountActivation: undefined
+	PasswordActivation: undefined
+	PasswordVerification: undefined
+	CodeHolder: undefined
 	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -74,7 +77,6 @@ const AppStack = observer(function AppStack() {
       {isAuthenticated ? (
         <>
           <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
-          <Stack.Screen name="OtpVerification" component={Screens.OtpVerificationScreen} />
           <Stack.Screen name="Demo" component={DemoNavigator} />
         </>
       ) : (
@@ -84,7 +86,10 @@ const AppStack = observer(function AppStack() {
       )}
       {/* @demo remove-block-end */}
       {/** 🔥 Your screens go here */}
+      <Stack.Screen name="OtpVerification" component={Screens.OtpVerificationScreen} />
       <Stack.Screen name="AccountActivation" component={Screens.AccountActivationScreen} />
+			<Stack.Screen name="PasswordVerification" component={Screens.PasswordVerificationScreen} />
+			<Stack.Screen name="CodeHolder" component={Screens.CodeHolderScreen} />
 			{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )

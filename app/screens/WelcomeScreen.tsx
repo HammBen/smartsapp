@@ -6,12 +6,15 @@ import { Button, Text, Screen, TextField } from "../components"
 import { AppStackScreenProps } from "../navigators"
 import { colors, spacing } from "../theme"
 import Modal from "react-native-modal"
+import { WebView } from "react-native-webview"
 // import { useHeader } from "../utils/useHeader"
 
 interface WelcomeScreenProps extends AppStackScreenProps<"Welcome"> {}
 
 export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeScreen(_props) {
   const [isModalVisible, setModalVisible] = useState(false)
+  const [isTermsWebViewVisible, setTermsWebViewVisible] = useState(false)
+  const [isPrivacyWebViewVisible, setPrivacyWebViewVisible] = useState(false)
 
   const showModal = () => {
     setModalVisible(true)
@@ -19,6 +22,22 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
 
   const hideModal = () => {
     setModalVisible(false)
+  }
+
+  const showTermsWebView = () => {
+    setTermsWebViewVisible(true)
+  }
+
+  const hideTermsWebView = () => {
+    setTermsWebViewVisible(false)
+  }
+
+  const showPrivacyWebView = () => {
+    setPrivacyWebViewVisible(true)
+  }
+
+  const hidePrivacyWebView = () => {
+    setPrivacyWebViewVisible(false)
   }
 
   const { navigation } = _props
@@ -89,28 +108,49 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
               <View style={$modalBottomSection}>
                 <View style={$modalBtnsWrapper}>
                   <Text text="Cancel" onPress={hideModal} />
-                  <Text text="Ok" onPress={hideModal} />
+                  <Text
+                    text="Ok"
+                    onPress={() => {
+                      navigation.navigate("OtpVerification")
+                    }}
+                  />
                 </View>
               </View>
             </View>
           </Modal>
           <Text style={$termsAndPrivacy} size="sm">
             By tapping on continue, you agree to our{" "}
-            <Text
-              style={[$termsAndPrivacy, $agreement]}
-              onPress={() => navigation.navigate("OtpVerification")}
-            >
+            <Text style={[$termsAndPrivacy, $agreement]} onPress={showTermsWebView}>
               Terms of use
             </Text>{" "}
             and{" "}
-            <Text
-              style={[$termsAndPrivacy, $agreement]}
-              onPress={() => console.log("Privacy was pressed")}
-            >
+            <Text style={[$termsAndPrivacy, $agreement]} onPress={showPrivacyWebView}>
               privacy policy
             </Text>
           </Text>
-          {/* <WebView source={{ uri: "https://www.yourcompany.com/terms" }} /> */}
+          <Modal isVisible={isTermsWebViewVisible} backdropColor="black">
+            <View style={$modalContentWebView}>
+              <WebView source={{ uri: "https://admin.smartsapp.com/legal/terms-of-use" }} />
+              <Button
+                style={$closeButton}
+                textStyle={$closeButtonText}
+                text="Close"
+                onPress={hideTermsWebView}
+              />
+            </View>
+          </Modal>
+
+          <Modal isVisible={isPrivacyWebViewVisible} backdropColor="black">
+            <View style={$modalContentWebView}>
+              <WebView source={{ uri: "https://admin.smartsapp.com/legal/privacy-policy" }} />
+              <Button
+                style={$closeButton}
+                textStyle={$closeButtonText}
+                text="Close"
+                onPress={hidePrivacyWebView}
+              />
+            </View>
+          </Modal>
         </View>
       </View>
     </Screen>
@@ -207,6 +247,7 @@ const $modalContent: ViewStyle = {
   backgroundColor: "white",
   // padding: 24,
   borderRadius: 8,
+  // margin: -16,
   // marginHorizontal: 31,
 }
 
@@ -240,15 +281,14 @@ const $agreement: TextStyle = {
   color: "#0061E6",
 }
 
-// Main Section End
+const $closeButton: ViewStyle = {}
+const $closeButtonText: ViewStyle = {}
 
-// const $bottomContainer: ViewStyle = {
-//   flexShrink: 1,
-//   flexGrow: 0,
-//   flexBasis: "43%",
-//   backgroundColor: colors.palette.neutral100,
-//   borderTopLeftRadius: 16,
-//   borderTopRightRadius: 16,
-//   paddingHorizontal: spacing.lg,
-//   justifyContent: "space-around",
-// }
+const $modalContentWebView: ViewStyle = {
+  margin: -18,
+  borderWidth: 0,
+  padding: 0,
+  flex: 1,
+}
+
+// Main Section End

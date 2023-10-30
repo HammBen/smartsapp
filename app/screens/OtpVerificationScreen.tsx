@@ -1,21 +1,38 @@
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { TextStyle, View, ViewStyle } from "react-native"
 import { AppStackScreenProps } from "app/navigators"
-import { Header, Icon, Screen, Text } from "app/components"
-import { useNavigation } from "@react-navigation/native"
-import { colors, spacing } from "app/theme"
+import { Button, CountDown, Header, Icon, Screen, Text } from "app/components"
+// import { useNavigation } from "@react-navigation/native"
+import { spacing } from "app/theme"
+import { OtpInput } from "react-native-otp-entry"
+// import { Countdown } from "react-native-element-timer"
 // import { useStores } from "app/models"
 
 interface OtpVerificationScreenProps extends AppStackScreenProps<"OtpVerification"> {}
 
 export const OtpVerificationScreen: FC<OtpVerificationScreenProps> = observer(
-  function OtpVerificationScreen() {
+  function OtpVerificationScreen(_props) {
+    const [countdownReachedZero, setCountdownReachedZero] = useState(false)
+
     // Pull in one of our MST stores
     // const { someStore, anotherStore } = useStores()
 
+    const handleCountdownFinish = () => {
+      setCountdownReachedZero(true)
+    }
+
+    const handleResendSms = () => {
+      // Add your code here to resend the SMS.
+      // navigation.goBack()
+      // alert("Hi my name is time")
+      navigation.navigate("PasswordVerification")
+    }
+
     // Pull in navigation via hook
-    const navigation = useNavigation()
+    // const navigation = useNavigation()
+    const { navigation } = _props
+
     return (
       <Screen safeAreaEdges={["bottom"]} style={$container}>
         <View style={$mainWrapper}>
@@ -31,16 +48,52 @@ export const OtpVerificationScreen: FC<OtpVerificationScreenProps> = observer(
             <View style={$infoMessage}>
               <Icon size={16} icon="info" />
               <Text
-                text="Enter the shorst code sent to [020 123 3456]"
+                text="Enter the short code sent to [020 123 3456]"
                 size="xxs"
                 onPress={() => navigation.goBack()}
               />
             </View>
-            <View></View>
-            <View style={$otpConfirmation}>
-              <Text style={$confirmationQuestion} text="Didn't receive sms?" size="xxs" />
+            <View style={$otpWrapper}>
+              <OtpInput
+                numberOfDigits={6}
+                focusColor="green"
+                focusStickBlinkingDuration={500}
+                onTextChange={(text) => console.log(text)}
+                theme={{
+                  pinCodeContainerStyle: {
+                    // backgroundColor: colors.palette.neutral300,
+                    backgroundColor: "#F4F4F6",
+                    width: 55,
+                    height: 45,
+                    borderWidth: 0,
+                  },
+                  pinCodeTextStyle: {},
+                  focusStickStyle: {
+                    borderColor: "#0061E6",
+                    borderWidth: 0,
+                  },
+                }}
+              />
             </View>
+            <View style={$otpConfirmationWrapper}>
+              <Text style={$confirmationQuestion} text="Didn't receive sms?" size="xxs" />
+              <CountDown initialCountdown={10} onFinish={handleCountdownFinish} />
+            </View>
+            {countdownReachedZero && (
+              <Button
+                style={$resendSmsBtn}
+                text="Resend SMS"
+                textStyle={$resendSmsBtnStyle}
+                onPress={handleResendSms}
+              />
+            )}
           </View>
+          <Button
+            text="Go Back"
+            onPress={() => {
+              navigation.goBack()
+            }}
+          />
         </View>
       </Screen>
     )
@@ -49,13 +102,9 @@ export const OtpVerificationScreen: FC<OtpVerificationScreenProps> = observer(
 
 const $container: ViewStyle = {
   flex: 1,
-  // backgroundColor: "#0061E6",
-  // borderWidth: 2,
-  // borderColor: colors.error,
 }
 
 const $mainWrapper: ViewStyle = {
-  // borderWidth: 2,
   height: "100%",
 }
 
@@ -65,23 +114,11 @@ const $infoMessage: ViewStyle = {
   alignItems: "center",
   justifyContent: "center",
   columnGap: 10,
-  // borderColor: "red",
-  // borderWidth: 2,
   backgroundColor: "#FAFAFA",
   padding: spacing.xs,
-  // padding: 19,
-  // paddingHorizontal: 16,
-  // paddingTop: 60,
-  // paddingBottom: 24,
-  // rowGap: 4,
-  // flexGrow: 0.2,
-  // flexBasis: "25%",
-  // justifyContent: "center",
-  // marginBottom: spacing.lg,
 }
 
 const $header: ViewStyle = {
-  // borderWidth: 1,
   paddingTop: 35,
   paddingBottom: 7,
 }
@@ -90,21 +127,41 @@ const $header: ViewStyle = {
 
 // Main Section Start
 const $mainSection: ViewStyle = {
-  backgroundColor: colors.palette.neutral100,
-  // backgroundColor: "red",
-  borderColor: "green",
-  // borderWidth: 2,
+  backgroundColor: "#FFFFFF",
+  // backgroundColor: "#E5E5E5",
   paddingHorizontal: 16,
   flexGrow: 1,
   paddingTop: 24,
+  alignItems: "center",
 }
 
-const $otpConfirmation: ViewStyle = {
+const $otpWrapper: ViewStyle = {
+  marginVertical: spacing.lg,
   // borderWidth: 1,
+  width: "100%",
+}
+
+const $otpConfirmationWrapper: ViewStyle = {
+  // borderWidth: 1,
+  flexDirection: "row",
+  justifyContent: "center",
+  alignItems: "center",
+  columnGap: spacing.xs,
+  marginBottom: spacing.xs,
 }
 
 const $confirmationQuestion: TextStyle = {
   textAlign: "center",
   color: "#808080",
+}
+
+const $resendSmsBtn: ViewStyle = {
+  borderColor: "#0061E6",
+  borderRadius: spacing.sm,
+  maxWidth: 200,
+}
+
+const $resendSmsBtnStyle: TextStyle = {
+  color: "#0061E6",
 }
 // Main Section End
