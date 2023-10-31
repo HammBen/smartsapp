@@ -21,6 +21,7 @@ interface PasswordVerificationScreenProps extends AppStackScreenProps<"PasswordV
 export const PasswordVerificationScreen: FC<PasswordVerificationScreenProps> = observer(
   function PasswordVerificationScreen() {
     const [isAuthPasswordHidden, setIsAuthPasswordHidden] = useState(true)
+    const [isReEnterPasswordHidden, setIsReEnterPasswordHidden] = useState(true)
     const [isModalVisible, setModalVisible] = useState(false)
 
     const showModal = () => {
@@ -29,6 +30,14 @@ export const PasswordVerificationScreen: FC<PasswordVerificationScreenProps> = o
 
     const hideModal = () => {
       setModalVisible(false)
+    }
+
+    const togglePasswordVisibility = () => {
+      setIsAuthPasswordHidden(!isAuthPasswordHidden)
+    }
+
+    const toggleReEnterPasswordVisibility = () => {
+      setIsReEnterPasswordHidden(!isReEnterPasswordHidden)
     }
 
     // Pull in one of our MST stores
@@ -45,11 +54,27 @@ export const PasswordVerificationScreen: FC<PasswordVerificationScreenProps> = o
               color={colors.palette.neutral800}
               containerStyle={props.style}
               size={20}
-              onPress={() => setIsAuthPasswordHidden(!isAuthPasswordHidden)}
+              onPress={togglePasswordVisibility}
             />
           )
         },
       [isAuthPasswordHidden],
+    )
+
+    const ReEnterPasswordRightAccessory = useMemo(
+      () =>
+        function PasswordRightAccessory(props: TextFieldAccessoryProps) {
+          return (
+            <Icon
+              icon={isReEnterPasswordHidden ? "view" : "hidden"}
+              color={colors.palette.neutral800}
+              containerStyle={props.style}
+              size={20}
+              onPress={toggleReEnterPasswordVisibility}
+            />
+          )
+        },
+      [isReEnterPasswordHidden],
     )
 
     return (
@@ -66,19 +91,21 @@ export const PasswordVerificationScreen: FC<PasswordVerificationScreenProps> = o
               style={$inputStyle}
               inputWrapperStyle={$textField}
               containerStyle={$textFieldContainer}
-              keyboardType="visible-password"
+              keyboardType="default"
               label="New password"
               placeholder="Enter password"
+              secureTextEntry={isAuthPasswordHidden}
               RightAccessory={PasswordRightAccessory}
             />
             <TextField
               style={$inputStyle}
               inputWrapperStyle={$textField}
               containerStyle={$textFieldContainer}
-              keyboardType="visible-password"
+              keyboardType="default"
               label="Re-enter password"
               placeholder="Enter password"
-              RightAccessory={PasswordRightAccessory}
+              secureTextEntry={isReEnterPasswordHidden}
+              RightAccessory={ReEnterPasswordRightAccessory}
             />
             <Button
               style={$button}
@@ -100,7 +127,12 @@ export const PasswordVerificationScreen: FC<PasswordVerificationScreenProps> = o
                 </View>
               </View>
             </Modal>
-            <Button text="Go Back" onPress={()=> {navigation.goBack()}} />
+            <Button
+              text="Go Back"
+              onPress={() => {
+                navigation.goBack()
+              }}
+            />
           </View>
         </View>
       </Screen>

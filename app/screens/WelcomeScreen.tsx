@@ -111,7 +111,7 @@ export const WelcomeScreen: FC<WelcomeScreenProps> = observer(function WelcomeSc
                   <Text
                     text="Ok"
                     onPress={() => {
-                      navigation.navigate("OtpVerification")
+                      navigation.navigate("Login")
                     }}
                   />
                 </View>

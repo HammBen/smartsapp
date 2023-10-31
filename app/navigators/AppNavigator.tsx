@@ -36,15 +36,15 @@ import { colors } from "app/theme"
  */
 export type AppStackParamList = {
   Welcome: undefined
-  Login: undefined 
-  Demo: NavigatorScreenParams<DemoTabParamList> 
+  Login: undefined
+  Demo: NavigatorScreenParams<DemoTabParamList>
   OtpVerification: undefined
   // 🔥 Your screens go here
   AccountActivation: undefined
-	PasswordActivation: undefined
-	PasswordVerification: undefined
-	CodeHolder: undefined
-	// IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
+  PasswordActivation: undefined
+  PasswordVerification: undefined
+  CodeHolder: undefined
+  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
 /**
@@ -58,22 +58,18 @@ export type AppStackScreenProps<T extends keyof AppStackParamList> = NativeStack
   T
 >
 
-// Documentation: https://reactnavigation.org/docs/stack-navigator/
 const Stack = createNativeStackNavigator<AppStackParamList>()
 
 const AppStack = observer(function AppStack() {
-  // @demo remove-block-start
   const {
     authenticationStore: { isAuthenticated },
   } = useStores()
 
-  // @demo remove-block-end
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false, navigationBarColor: colors.background }}
-      initialRouteName={isAuthenticated ? "Welcome" : "Login"} // @demo remove-current-line
+      initialRouteName={isAuthenticated ? "Welcome" : "Login"}
     >
-      {/* @demo remove-block-start */}
       {isAuthenticated ? (
         <>
           <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
@@ -88,9 +84,10 @@ const AppStack = observer(function AppStack() {
       {/** 🔥 Your screens go here */}
       <Stack.Screen name="OtpVerification" component={Screens.OtpVerificationScreen} />
       <Stack.Screen name="AccountActivation" component={Screens.AccountActivationScreen} />
-			<Stack.Screen name="PasswordVerification" component={Screens.PasswordVerificationScreen} />
-			<Stack.Screen name="CodeHolder" component={Screens.CodeHolderScreen} />
-			{/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
+      <Stack.Screen name="PasswordVerification" component={Screens.PasswordVerificationScreen} />
+      <Stack.Screen name="CodeHolder" component={Screens.CodeHolderScreen} />
+      {/* <Stack.Screen name="Login" component={Screens.LoginScreen} /> */}
+      {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )
 })
